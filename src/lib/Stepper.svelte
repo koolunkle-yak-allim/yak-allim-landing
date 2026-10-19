@@ -17,29 +17,40 @@
   .stepper {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-family: system-ui, sans-serif;
-    font-size: 18px;
+    gap: var(--space-3);
+    font-size: var(--text-body);
   }
+
   .label {
     min-width: 6em;
+    color: var(--color-ink);
   }
+
   button {
-    width: 48px;
-    height: 48px;
+    width: var(--touch-min);
+    height: var(--touch-min);
+    font: inherit;
     font-size: 22px;
-    border: 1px solid #dde4e8;
-    border-radius: 12px;
-    background: #ffffff;
+    color: var(--color-ink);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-medium);
     cursor: pointer;
   }
+
+  button:hover:not(:disabled) {
+    background: var(--color-sunken);
+  }
+
   button:disabled {
     opacity: 0.38;
     cursor: default;
   }
+
   output {
     min-width: 3em;
     text-align: center;
+    font-size: var(--text-title);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
   }
