@@ -1,16 +1,26 @@
 <script>
-  // 앱의 알람 설정 시트에 있는 "1일 횟수" 스테퍼와 같은 규칙: 1~8회.
-  const MIN = 1;
-  const MAX = 8;
+  // 앱의 알람 설정 시트에 있는 스테퍼. value가 null이면 아직 정하지 않은 값이라 "선택"을 주의 색으로 보여 주고,
+  // −/+ 어느 쪽을 눌러도 start 값부터 시작한다. 바뀐 값은 onchange로 부모에게 알린다.
+  let { label, value, min, max, step = 1, start = min, format = String, onchange } = $props();
 
-  let count = $state(3);
+  const isEmpty = $derived(value === null);
+  const canDecrease = $derived(isEmpty || value > min);
+  const canIncrease = $derived(isEmpty || value < max);
+
+  function change(direction) {
+    if (isEmpty) {
+      onchange(start);
+      return;
+    }
+    onchange(Math.min(max, Math.max(min, value + step * direction)));
+  }
 </script>
 
 <div class="stepper">
-  <span class="label">1일 횟수</span>
-  <button onclick={() => count--} disabled={count <= MIN} aria-label="1일 횟수 줄이기">−</button>
-  <output>{count}회</output>
-  <button onclick={() => count++} disabled={count >= MAX} aria-label="1일 횟수 늘리기">+</button>
+  <span class="label">{label}</span>
+  <button type="button" onclick={() => change(-1)} disabled={!canDecrease} aria-label="{label} 줄이기">−</button>
+  <output class:empty={isEmpty}>{isEmpty ? '선택' : format(value)}</output>
+  <button type="button" onclick={() => change(1)} disabled={!canIncrease} aria-label="{label} 늘리기">+</button>
 </div>
 
 <style>
@@ -18,17 +28,18 @@
     display: flex;
     align-items: center;
     gap: var(--space-3);
-    font-size: var(--text-body);
   }
 
   .label {
-    min-width: 6em;
+    flex: 1;
+    min-width: 0;
     color: var(--color-ink);
   }
 
   button {
     width: var(--touch-min);
     height: var(--touch-min);
+    flex: none;
     font: inherit;
     font-size: 22px;
     color: var(--color-ink);
@@ -48,10 +59,14 @@
   }
 
   output {
-    min-width: 3em;
+    width: 4.5em;
     text-align: center;
     font-size: var(--text-title);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
+  }
+
+  output.empty {
+    color: var(--color-warning);
   }
 </style>

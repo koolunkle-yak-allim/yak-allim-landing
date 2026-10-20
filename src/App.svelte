@@ -3,7 +3,7 @@
   import HowItWorks from './lib/sections/HowItWorks.svelte';
   import Safety from './lib/sections/Safety.svelte';
   import TechStack from './lib/sections/TechStack.svelte';
-  import Stepper from './lib/Stepper.svelte';
+  import AlarmDemo from './lib/sections/AlarmDemo.svelte';
 </script>
 
 <header class="topbar">
@@ -17,10 +17,7 @@
   <HowItWorks />
   <Safety />
 
-  <!-- 3단계에서 알람 설정 데모로 바뀐다. -->
-  <section class="demo">
-    <Stepper />
-  </section>
+  <AlarmDemo />
 
   <TechStack />
 </main>
@@ -62,15 +59,6 @@
     flex-direction: column;
     gap: var(--space-16);
     padding-block: var(--space-16);
-  }
-
-  .demo {
-    padding: var(--space-6);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-large);
-    background: var(--color-surface);
-    width: fit-content;
-    max-width: 100%;
   }
 
   .footer {
