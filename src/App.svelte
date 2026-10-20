@@ -1,4 +1,8 @@
 <script>
+  import Hero from './lib/sections/Hero.svelte';
+  import HowItWorks from './lib/sections/HowItWorks.svelte';
+  import Safety from './lib/sections/Safety.svelte';
+  import TechStack from './lib/sections/TechStack.svelte';
   import Stepper from './lib/Stepper.svelte';
 </script>
 
@@ -9,15 +13,22 @@
 </header>
 
 <main class="container">
-  <section class="hero">
-    <h1>약 봉투처럼 정확하고 또렷하게</h1>
-    <p class="lead">복약 안내서를 찍으면 약마다 복용 정보를 정리하고 알람을 맞춰 드려요.</p>
-  </section>
+  <Hero />
+  <HowItWorks />
+  <Safety />
 
+  <!-- 3단계에서 알람 설정 데모로 바뀐다. -->
   <section class="demo">
     <Stepper />
   </section>
+
+  <TechStack />
 </main>
+
+<footer class="container footer">
+  <p>화면 속 복약 안내서는 시연용으로 만든 예시 자료이며 실제 처방 정보는 없습니다.</p>
+  <p>약올림 · 김준기</p>
+</footer>
 
 <style>
   /* 모든 섹션이 같은 폭과 좌우 여백을 쓰도록 하는 틀 */
@@ -49,26 +60,8 @@
   main {
     display: flex;
     flex-direction: column;
-    gap: var(--space-12);
+    gap: var(--space-16);
     padding-block: var(--space-16);
-  }
-
-  .hero {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    max-width: 40ch;
-  }
-
-  h1 {
-    font-size: var(--text-hero);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-  }
-
-  .lead {
-    font-size: 18px;
-    color: var(--color-ink-muted);
   }
 
   .demo {
@@ -78,5 +71,15 @@
     background: var(--color-surface);
     width: fit-content;
     max-width: 100%;
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--color-line);
+    font-size: var(--text-body-small);
+    color: var(--color-ink-muted);
   }
 </style>
