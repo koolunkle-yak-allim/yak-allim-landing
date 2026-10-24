@@ -44,6 +44,14 @@ export function resizeTimes(current, frequency) {
   return defaults.map((time, index) => current[index] ?? time);
 }
 
+/**
+ * 알람을 켤 수 있는지. 1회 복용량을 정했고 복용 시각이 하나도 비어 있지 않아야 한다.
+ * 앱은 시각 선택기라 비지 않지만, 웹의 time 입력은 지울 수 있어 데모에서만 따로 막는다.
+ */
+export function isAlarmReady(amount, times) {
+  return amount !== null && times.every((time) => time !== '');
+}
+
 /** "08:00"이 하루 중 언제인지. 시각 칩의 이름표에 쓴다. */
 export function timeOfDay(time) {
   const hour = Number(time.split(':')[0]) || 0;
