@@ -4,7 +4,7 @@
   import Safety from './lib/sections/Safety.svelte';
   import TechStack from './lib/sections/TechStack.svelte';
   import AlarmDemo from './lib/sections/AlarmDemo.svelte';
-  import DesignDecisions from './lib/sections/DesignDecisions.svelte';
+  import DesignPrinciples from './lib/sections/DesignPrinciples.svelte';
   import ThemeToggle from './lib/ThemeToggle.svelte';
 </script>
 
@@ -22,7 +22,7 @@
 
   <AlarmDemo />
 
-  <DesignDecisions />
+  <DesignPrinciples />
 
   <TechStack />
 </main>
