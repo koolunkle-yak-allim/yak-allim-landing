@@ -20,13 +20,18 @@ npm test         # vitest 단위 테스트
 
 `src/lib/alarm.test.js`는 앱의 `AlarmFormDefaultsTest.kt`와 같은 사례로 `alarm.js`를 검사합니다.
 
-### 프리렌더링
+### 빌드 단계
 
-`npm run build`는 세 단계로 돕니다.
+`npm run build`는 네 단계로 돕니다.
 
 1. `vite build`: 브라우저용 JS·CSS·이미지를 `dist/`에 만듭니다.
 2. `vite build --ssr src/entry-server.js --outDir dist-server`: `App`을 HTML 문자열로 그리는 모듈을 만듭니다.
 3. `node scripts/prerender.js`: 2의 결과를 `dist/index.html`의 `<div id="app">` 안에 넣고 `dist-server/`를 지웁니다.
+4. `node scripts/subset-font.js`: HTML과 JS·CSS 번들에 나온 글자만 담은 Pretendard 가변 글꼴(굵기 400~800)을 만들고,
+   `@font-face`와 preload를 `dist/index.html`에 넣습니다.
+
+글꼴은 빌드마다 다시 만들어지므로 문구를 바꿔도 따로 할 일이 없습니다. 다만 페이지 코드에 없는데 브라우저가 Pretendard로 그리는 글자
+(time 입력의 "오전·오후" 등)는 `subset-font.js`의 `BROWSER_TEXT`에 적어 둡니다. 개발 서버는 Pretendard의 글자 범위별 CSS를 그대로 씁니다.
 
 브라우저에서는 `main.js`가 미리 그려진 HTML에 `hydrate`로 이벤트만 연결합니다. 개발 서버는 `#app`이 비어 있어 `mount`로 처음부터 그립니다.
 그래서 컴포넌트가 처음 그릴 때는 `window`·`document`·`localStorage`·오늘 날짜를 읽지 않고, `$effect` 안에서 읽습니다(`ThemeToggle`, `AlarmDemo` 참고).
@@ -50,8 +55,9 @@ index.html              메타 태그(설명, Open Graph), favicon, 저장된 �
 public/                 favicon, apple-touch-icon, 공유 카드 og.png (그대로 복사, base 경로 자동 부여)
 scripts/
   prerender.js          서버 빌드 결과로 dist/index.html에 App HTML을 넣음
+  subset-font.js        페이지에 쓰인 글자만 담은 Pretendard woff2를 만들어 연결
 src/
-  main.js               Pretendard 글꼴과 app.css를 불러오고 미리 그린 HTML에 App을 hydrate
+  main.js               app.css를 불러오고 미리 그린 HTML에 App을 hydrate (개발 서버에서만 Pretendard CSS)
   entry-server.js       빌드 때 svelte/server의 render로 App을 HTML로 그림
   app.css               DESIGN.md의 색·글자·간격·모서리 토큰, 라이트·다크 테마
   App.svelte            상단바, 섹션 배치, footer
