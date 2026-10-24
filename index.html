@@ -25,6 +25,14 @@
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Yak-Allim 앱 아이콘과 '복약 안내서 사진으로 맞추는 복약 알람' 문구" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- 저장된 테마를 첫 화면을 그리기 전에 적용해, 새로고침 때 반대 테마가 잠깐 비치지 않게 한다. -->
+    <script>
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+      } catch {}
+    </script>
   </head>
   <body>
     <div id="app"></div>

@@ -77,7 +77,7 @@
   }
 }
 
-/* 사용자가 다크를 직접 고른 경우. 4단계의 테마 전환 버튼이 이 속성을 바꾼다. */
+/* 사용자가 다크를 직접 고른 경우. ThemeToggle.svelte가 이 속성을 바꾼다. */
 :root[data-theme="dark"] {
   --color-canvas: #11181C;
   --color-surface: #1A2329;

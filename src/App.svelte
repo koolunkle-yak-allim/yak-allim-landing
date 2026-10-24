@@ -4,11 +4,13 @@
   import Safety from './lib/sections/Safety.svelte';
   import TechStack from './lib/sections/TechStack.svelte';
   import AlarmDemo from './lib/sections/AlarmDemo.svelte';
+  import ThemeToggle from './lib/ThemeToggle.svelte';
 </script>
 
 <header class="topbar">
   <div class="container">
     <span class="wordmark">Yak-Allim</span>
+    <ThemeToggle />
   </div>
 </header>
 
@@ -45,6 +47,7 @@
   .topbar .container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     min-height: 56px;
   }
 
