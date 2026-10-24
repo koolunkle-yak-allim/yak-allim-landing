@@ -25,11 +25,18 @@
   let status = $state('');
   /** @type {HTMLHeadingElement} */
   let heading;
+  // 오늘 날짜는 방문한 브라우저에서 정한다. 빌드 때 미리 그린 HTML에는 빌드한 날이 박히므로 하이드레이션 뒤에 채운다.
+  /** @type {Date | null} */
+  let today = $state(null);
+  $effect(() => {
+    today = new Date();
+  });
 
   // 위 값에서 계산되는 값. 원래 값이 바뀌면 자동으로 다시 계산된다.
   const hasEmptyTime = $derived(times.includes(''));
   const canTurnOn = $derived(isAlarmReady(amount, times));
-  const period = $derived(dateRange(duration));
+  // 날짜를 모를 때도 줄 높이를 지켜 레이아웃이 밀리지 않게 공백 한 칸을 둔다.
+  const period = $derived(today ? dateRange(duration, today) : ' ');
   const summary = $derived(
     `1회 ${amount === null ? '?' : `${formatAmount(amount)}정`} · 1일 ${frequency}회 · ${duration}일분`,
   );
