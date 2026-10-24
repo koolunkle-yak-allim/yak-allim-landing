@@ -16,6 +16,11 @@ npm run build    # dist/에 정적 파일 생성
 npm run preview  # 빌드 결과 미리 보기
 ```
 
+## 배포
+
+`main`에 푸시하면 `.github/workflows/deploy.yml`이 `npm run build` 결과(`dist/`)를 GitHub Pages에 올립니다.
+Actions 탭에서 수동으로 실행할 수도 있습니다. 저장소 설정의 Pages Source는 GitHub Actions여야 합니다.
+
 ## 관련 저장소
 
 - [yak-allim-android](https://github.com/koolunkle-yak-allim/yak-allim-android): Android 앱, 디자인 기준 문서 `DESIGN.md`
