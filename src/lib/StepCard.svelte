@@ -6,7 +6,8 @@
 
 <article class="step">
   <div class="frame">
-    <PhoneFrame src={image} alt={imageAlt} />
+    <!-- .frame 최대 240px에서 PhoneFrame 테두리 12px을 뺀 폭 -->
+    <PhoneFrame {image} alt={imageAlt} sizes="228px" />
   </div>
   <span class="number">{number}</span>
   <h3>{title}</h3>
