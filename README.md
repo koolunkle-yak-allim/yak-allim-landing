@@ -41,12 +41,13 @@ src/
   main.js               Pretendard 글꼴과 app.css를 불러오고 App을 마운트
   app.css               DESIGN.md의 색·글자·간격·모서리 토큰, 라이트·다크 테마
   App.svelte            상단바, 섹션 배치, footer
-  assets/screens/       시연용 안내서로 찍은 앱 화면
+  assets/screens/       시연용 안내서로 찍은 앱 화면, 화면마다 360·600·720px WebP
   lib/
     sections/           페이지 섹션 컴포넌트 (위 표)
     Stepper.svelte      −/+ 스테퍼, 값이 null이면 "선택" 표시
     ThemeToggle.svelte  라이트·다크 전환 버튼
-    PhoneFrame.svelte   앱 화면을 감싸는 폰 테두리
+    PhoneFrame.svelte   앱 화면을 감싸는 폰 테두리, srcset·sizes로 맞는 크기만 받음
+    screens.js          screen(이름)으로 폭별 WebP를 srcset으로 묶음
     StepCard.svelte     사용 흐름 단계 카드
     FeatureCard.svelte  안전 설계 카드
     alarm.js            앱 AlarmFormDefaults.kt의 알람 규칙을 옮긴 함수

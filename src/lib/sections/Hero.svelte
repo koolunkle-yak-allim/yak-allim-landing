@@ -1,6 +1,6 @@
 <script>
   import PhoneFrame from '../PhoneFrame.svelte';
-  import resultImage from '../../assets/screens/result.jpg';
+  import { screen } from '../screens.js';
 
   // 약 봉투 표기 순서 그대로 보여 주는 예시
   const dosage = [
@@ -32,7 +32,13 @@
     </div>
   </div>
   <div class="visual">
-    <PhoneFrame src={resultImage} alt="분석 결과 화면: 약 3개를 찾았어요, 알람 0/3개 켜짐, 확인 필요 1개" />
+    <!-- 첫 화면의 가장 큰 요소(LCP)라 지연 로딩하지 않는다. 폭은 .visual 최대 300px에서 테두리 12px을 뺀 값 -->
+    <PhoneFrame
+      image={screen('result')}
+      sizes="288px"
+      priority
+      alt="분석 결과 화면: 약 3개를 찾았어요, 알람 0/3개 켜짐, 확인 필요 1개"
+    />
   </div>
 </section>
 
