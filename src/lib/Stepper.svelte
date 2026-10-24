@@ -13,7 +13,9 @@
   const canDecrease = $derived(isEmpty || value > min);
   const canIncrease = $derived(isEmpty || value < max);
 
+  // 끝값에서는 disabled 대신 aria-disabled로 막는다. disabled는 누르던 버튼에서 키보드 포커스를 빼앗는다.
   function change(direction) {
+    if (direction < 0 ? !canDecrease : !canIncrease) return;
     if (isEmpty) {
       onchange(start);
       return;
@@ -25,9 +27,9 @@
 <div class="stepper">
   <span class="label">{label}</span>
   <div class="controls">
-    <button type="button" onclick={() => change(-1)} disabled={!canDecrease} aria-label="{label} 줄이기">−</button>
+    <button type="button" onclick={() => change(-1)} aria-disabled={!canDecrease} aria-label="{label} 줄이기">−</button>
     <output class:empty={isEmpty}>{isEmpty ? '선택' : format(value)}</output>
-    <button type="button" onclick={() => change(1)} disabled={!canIncrease} aria-label="{label} 늘리기">+</button>
+    <button type="button" onclick={() => change(1)} aria-disabled={!canIncrease} aria-label="{label} 늘리기">+</button>
   </div>
 </div>
 
@@ -66,11 +68,11 @@
     cursor: pointer;
   }
 
-  button:hover:not(:disabled) {
+  button:hover:not([aria-disabled='true']) {
     background: var(--color-sunken);
   }
 
-  button:disabled {
+  button[aria-disabled='true'] {
     opacity: 0.38;
     cursor: default;
   }
