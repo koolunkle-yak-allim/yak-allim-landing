@@ -4,6 +4,7 @@
   import Safety from './lib/sections/Safety.svelte';
   import TechStack from './lib/sections/TechStack.svelte';
   import AlarmDemo from './lib/sections/AlarmDemo.svelte';
+  import DesignDecisions from './lib/sections/DesignDecisions.svelte';
   import ThemeToggle from './lib/ThemeToggle.svelte';
 </script>
 
@@ -20,6 +21,8 @@
   <Safety />
 
   <AlarmDemo />
+
+  <DesignDecisions />
 
   <TechStack />
 </main>
