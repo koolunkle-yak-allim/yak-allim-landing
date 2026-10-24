@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr src/entry-server.js --outDir dist-server && node scripts/prerender.js",
+    "build": "vite build && vite build --ssr src/entry-server.js --outDir dist-server && node scripts/prerender.js && node scripts/subset-font.js",
     "preview": "vite preview",
     "check": "svelte-check",
     "test": "vitest run"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "subset-font": "2.9.0",
     "svelte": "5.57.1",
     "svelte-check": "4.7.6",
     "typescript": "6.0.3",
