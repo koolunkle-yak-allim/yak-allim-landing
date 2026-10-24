@@ -8,7 +8,7 @@
 
 <header class="topbar">
   <div class="container">
-    <span class="wordmark">약올림</span>
+    <span class="wordmark">Yak-Allim</span>
   </div>
 </header>
 
@@ -24,7 +24,7 @@
 
 <footer class="container footer">
   <p>화면 속 복약 안내서는 시연용으로 만든 예시 자료이며 실제 처방 정보는 없습니다.</p>
-  <p>약올림 · 김준기</p>
+  <p>Yak-Allim · 김준기</p>
 </footer>
 
 <style>
