@@ -1,6 +1,16 @@
 // 앱의 AlarmFormDefaultsTest.kt와 같은 사례를 그대로 옮겨, 웹 데모가 앱과 같은 값을 내는지 확인한다.
 import { describe, expect, it } from 'vitest';
-import { AMOUNT, FREQUENCY, DURATION, formatAmount, defaultTimes, resizeTimes, timeOfDay, dateRange } from './alarm.js';
+import {
+  AMOUNT,
+  FREQUENCY,
+  DURATION,
+  formatAmount,
+  defaultTimes,
+  resizeTimes,
+  isAlarmReady,
+  timeOfDay,
+  dateRange,
+} from './alarm.js';
 
 describe('값 범위', () => {
   it('앱의 MIN/MAX 상수와 같다', () => {
@@ -45,6 +55,21 @@ describe('resizeTimes', () => {
 
   it('횟수가 줄면 뒤쪽 시각을 뺀다', () => {
     expect(resizeTimes(['07:30', '13:00', '20:00'], 2)).toEqual(['07:30', '13:00']);
+  });
+});
+
+describe('isAlarmReady', () => {
+  it('복용량과 모든 시각을 정해야 켤 수 있다', () => {
+    expect(isAlarmReady(1, ['08:00', '19:00'])).toBe(true);
+    expect(isAlarmReady(null, ['08:00', '19:00'])).toBe(false);
+  });
+
+  it('time 입력을 지워 빈 시각이 있으면 켤 수 없다', () => {
+    expect(isAlarmReady(1, ['08:00', ''])).toBe(false);
+  });
+
+  it('빈 시각은 횟수를 바꿔도 비어 있는 채로 남는다', () => {
+    expect(resizeTimes(['', '19:00'], 3)).toEqual(['', '19:00', '18:30']);
   });
 });
 

@@ -1,6 +1,16 @@
 <script>
   import Stepper from '../Stepper.svelte';
-  import { AMOUNT, FREQUENCY, DURATION, formatAmount, defaultTimes, resizeTimes, timeOfDay, dateRange } from '../alarm.js';
+  import {
+    AMOUNT,
+    FREQUENCY,
+    DURATION,
+    formatAmount,
+    defaultTimes,
+    resizeTimes,
+    isAlarmReady,
+    timeOfDay,
+    dateRange,
+  } from '../alarm.js';
 
   // 시연용 안내서의 뮤코펙트정: 1회 투약량 칸이 비어 있어 앱도 "선택"으로 비워 둔다.
   const INITIAL = { amount: null, frequency: 2, duration: 5 };
@@ -12,7 +22,8 @@
   let isOn = $state(false);
 
   // 위 값에서 계산되는 값. 원래 값이 바뀌면 자동으로 다시 계산된다.
-  const canTurnOn = $derived(amount !== null);
+  const hasEmptyTime = $derived(times.includes(''));
+  const canTurnOn = $derived(isAlarmReady(amount, times));
   const period = $derived(dateRange(duration));
   const summary = $derived(
     `1회 ${amount === null ? '?' : `${formatAmount(amount)}정`} · 1일 ${frequency}회 · ${duration}일분`,
@@ -55,6 +66,8 @@
 
       {#if amount === null}
         <p class="hint">사진에 없어 비워 둔 값이 있어요. 약 봉투를 보고 직접 정해 주세요.</p>
+      {:else if hasEmptyTime}
+        <p class="hint">비어 있는 복용 시각이 있어요. 알람이 울릴 시각을 정해 주세요.</p>
       {/if}
 
       <div class="group">
@@ -92,8 +105,8 @@
         <span class="group-title">복용 시각 · 하루 {frequency}번</span>
         <div class="times">
           {#each times as time, index (index)}
-            <label class="time">
-              <span>{timeOfDay(time)}</span>
+            <label class="time" class:empty={time === ''}>
+              <span>{time === '' ? '선택' : timeOfDay(time)}</span>
               <input type="time" bind:value={times[index]} oninput={() => (isOn = false)} />
             </label>
           {/each}
@@ -228,6 +241,11 @@
     font-size: var(--text-caption);
     font-weight: 600;
     color: var(--color-ink-muted);
+  }
+
+  .time.empty {
+    border-color: var(--color-warning);
+    color: var(--color-warning);
   }
 
   .time input {
