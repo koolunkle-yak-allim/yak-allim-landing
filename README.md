@@ -1,6 +1,6 @@
 # Yak-Allim-Landing
 
-> **복약 안내서 OCR 분석 기반 복약 관리 솔루션**의 랜딩 페이지
+> **Yak-Allim(약올림)**: 복약 안내서 OCR 분석 기반 복약 관리 솔루션의 랜딩 페이지
 
 [Svelte 5](https://svelte.dev)와 [Vite](https://vite.dev)로 만든 한 페이지짜리 정적 사이트입니다.
 GitHub Pages(`https://koolunkle-yak-allim.github.io/yak-allim-landing/`)에 배포합니다.
