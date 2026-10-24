@@ -1,6 +1,12 @@
 <script>
   // 앱의 알람 설정 시트에 있는 스테퍼. value가 null이면 아직 정하지 않은 값이라 "선택"을 주의 색으로 보여 주고,
   // −/+ 어느 쪽을 눌러도 start 값부터 시작한다. 바뀐 값은 onchange로 부모에게 알린다.
+  /**
+   * @type {{
+   *   label: string, value: number | null, min: number, max: number, step?: number, start?: number,
+   *   format?: (value: number) => string, onchange: (value: number) => void,
+   * }}
+   */
   let { label, value, min, max, step = 1, start = min, format = String, onchange } = $props();
 
   const isEmpty = $derived(value === null);
