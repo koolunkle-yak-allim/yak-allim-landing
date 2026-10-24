@@ -25,7 +25,7 @@
     </p>
     <div class="actions">
       <a class="button primary" href="https://github.com/koolunkle-yak-allim">GitHub에서 보기</a>
-      <a class="button" href="https://claude.ai/artifact/JXGRgnHoA8WStwSePZfq6Y">디자인 시스템</a>
+      <a class="button" href="https://github.com/koolunkle-yak-allim/yak-allim-android/blob/main/DESIGN.md">디자인 시스템</a>
     </div>
   </div>
   <div class="visual">
