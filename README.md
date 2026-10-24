@@ -12,13 +12,24 @@ Node.js 22.12 이상이 필요합니다(vitest 5 기준).
 ```bash
 npm install
 npm run dev      # 개발 서버 (http://localhost:5173/yak-allim-landing/)
-npm run build    # dist/에 정적 파일 생성
+npm run build    # dist/에 정적 파일 생성 (프리렌더링 포함)
 npm run preview  # 빌드 결과 미리 보기
 npm run check    # svelte-check로 .svelte·.js 검사
 npm test         # vitest 단위 테스트
 ```
 
 `src/lib/alarm.test.js`는 앱의 `AlarmFormDefaultsTest.kt`와 같은 사례로 `alarm.js`를 검사합니다.
+
+### 프리렌더링
+
+`npm run build`는 세 단계로 돕니다.
+
+1. `vite build`: 브라우저용 JS·CSS·이미지를 `dist/`에 만듭니다.
+2. `vite build --ssr src/entry-server.js --outDir dist-server`: `App`을 HTML 문자열로 그리는 모듈을 만듭니다.
+3. `node scripts/prerender.js`: 2의 결과를 `dist/index.html`의 `<div id="app">` 안에 넣고 `dist-server/`를 지웁니다.
+
+브라우저에서는 `main.js`가 미리 그려진 HTML에 `hydrate`로 이벤트만 연결합니다. 개발 서버는 `#app`이 비어 있어 `mount`로 처음부터 그립니다.
+그래서 컴포넌트가 처음 그릴 때는 `window`·`document`·`localStorage`·오늘 날짜를 읽지 않고, `$effect` 안에서 읽습니다(`ThemeToggle`, `AlarmDemo` 참고).
 
 ## 페이지 구성
 
@@ -37,15 +48,18 @@ npm test         # vitest 단위 테스트
 ```text
 index.html              메타 태그(설명, Open Graph), favicon, 저장된 테마를 먼저 적용하는 스크립트
 public/                 favicon, apple-touch-icon, 공유 카드 og.png (그대로 복사, base 경로 자동 부여)
+scripts/
+  prerender.js          서버 빌드 결과로 dist/index.html에 App HTML을 넣음
 src/
-  main.js               Pretendard 글꼴과 app.css를 불러오고 App을 마운트
+  main.js               Pretendard 글꼴과 app.css를 불러오고 미리 그린 HTML에 App을 hydrate
+  entry-server.js       빌드 때 svelte/server의 render로 App을 HTML로 그림
   app.css               DESIGN.md의 색·글자·간격·모서리 토큰, 라이트·다크 테마
   App.svelte            상단바, 섹션 배치, footer
   assets/screens/       시연용 안내서로 찍은 앱 화면, 화면마다 360·600·720px WebP
   lib/
     sections/           페이지 섹션 컴포넌트 (위 표)
     Stepper.svelte      −/+ 스테퍼, 값이 null이면 "선택" 표시
-    ThemeToggle.svelte  라이트·다크 전환 버튼
+    ThemeToggle.svelte  라이트·다크 전환 버튼, 아이콘은 CSS가 현재 테마로 고름
     PhoneFrame.svelte   앱 화면을 감싸는 폰 테두리, srcset·sizes로 맞는 크기만 받음
     screens.js          screen(이름)으로 폭별 WebP를 srcset으로 묶음
     StepCard.svelte     사용 흐름 단계 카드
