@@ -1,4 +1,5 @@
 <script>
+  import { tick } from 'svelte';
   import Stepper from '../Stepper.svelte';
   import {
     AMOUNT,
@@ -20,6 +21,10 @@
   let duration = $state(INITIAL.duration);
   let times = $state(defaultTimes(INITIAL.frequency));
   let isOn = $state(false);
+  // 화면 읽기 프로그램에 알릴 짧은 상태 문장. 카드 전체 대신 이것만 읽힌다.
+  let status = $state('');
+  /** @type {HTMLHeadingElement} */
+  let heading;
 
   // 위 값에서 계산되는 값. 원래 값이 바뀌면 자동으로 다시 계산된다.
   const hasEmptyTime = $derived(times.includes(''));
@@ -29,28 +34,44 @@
     `1회 ${amount === null ? '?' : `${formatAmount(amount)}정`} · 1일 ${frequency}회 · ${duration}일분`,
   );
 
+  // 켜진 알람의 값을 바꾸면 알람을 끈다.
+  function turnOff() {
+    if (isOn) status = '값이 바뀌어 알람이 꺼졌어요.';
+    isOn = false;
+  }
+
+  function turnOn() {
+    if (!canTurnOn) return;
+    isOn = true;
+    status = `알람을 켰어요. ${times.join(', ')}`;
+  }
+
   function setAmount(next) {
     amount = next;
-    isOn = false;
+    turnOff();
   }
 
   function setFrequency(next) {
     frequency = next;
     times = resizeTimes(times, next);
-    isOn = false;
+    turnOff();
   }
 
   function setDuration(next) {
     duration = next;
-    isOn = false;
+    turnOff();
   }
 
-  function reset() {
+  // 누른 버튼이 사라지므로, 키보드 포커스를 시트 제목으로 옮겨 처음부터 다시 이어 가게 한다.
+  async function reset() {
     amount = INITIAL.amount;
     frequency = INITIAL.frequency;
     duration = INITIAL.duration;
     times = defaultTimes(INITIAL.frequency);
     isOn = false;
+    status = '처음 상태로 돌렸어요.';
+    await tick();
+    heading.focus();
   }
 </script>
 
@@ -62,12 +83,12 @@
 
   <div class="layout">
     <div class="sheet">
-      <h3>뮤코펙트정</h3>
+      <h3 bind:this={heading} tabindex="-1">뮤코펙트정</h3>
 
       {#if amount === null}
-        <p class="hint">사진에 없어 비워 둔 값이 있어요. 약 봉투를 보고 직접 정해 주세요.</p>
+        <p class="hint" id="demo-hint">사진에 없어 비워 둔 값이 있어요. 약 봉투를 보고 직접 정해 주세요.</p>
       {:else if hasEmptyTime}
-        <p class="hint">비어 있는 복용 시각이 있어요. 알람이 울릴 시각을 정해 주세요.</p>
+        <p class="hint" id="demo-hint">비어 있는 복용 시각이 있어요. 알람이 울릴 시각을 정해 주세요.</p>
       {/if}
 
       <div class="group">
@@ -106,17 +127,31 @@
         <div class="times">
           {#each times as time, index (index)}
             <label class="time" class:empty={time === ''}>
-              <span>{time === '' ? '선택' : timeOfDay(time)}</span>
-              <input type="time" bind:value={times[index]} oninput={() => (isOn = false)} />
+              <span aria-hidden="true">{time === '' ? '선택' : timeOfDay(time)}</span>
+              <input
+                type="time"
+                bind:value={times[index]}
+                oninput={turnOff}
+                aria-label={time === '' ? `${index + 1}번째 복용 시각, 비어 있음` : `${timeOfDay(time)} 복용 시각`}
+              />
             </label>
           {/each}
         </div>
       </div>
 
-      <button type="button" class="primary" disabled={!canTurnOn} onclick={() => (isOn = true)}>알람 켜기</button>
+      <!-- disabled 대신 aria-disabled: 키보드로 닿을 수 있고, 왜 못 켜는지 안내 문구를 함께 읽힌다. -->
+      <button
+        type="button"
+        class="primary"
+        aria-disabled={!canTurnOn}
+        aria-describedby={canTurnOn ? undefined : 'demo-hint'}
+        onclick={turnOn}>알람 켜기</button
+      >
     </div>
 
-    <div class="result" aria-live="polite">
+    <p class="sr-only" role="status">{status}</p>
+
+    <div class="result">
       {#if isOn}
         <div class="card">
           <div class="card-head">
@@ -275,7 +310,7 @@
     color: var(--color-on-primary);
   }
 
-  button.primary:disabled {
+  button.primary[aria-disabled='true'] {
     background: var(--color-sunken);
     color: var(--color-ink-muted);
     cursor: default;

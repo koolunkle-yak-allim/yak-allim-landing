@@ -8,6 +8,8 @@
     { label: '1일', value: '3회' },
     { label: '', value: '5일분' },
   ];
+  // 화면 읽기 프로그램용 문장. 보이는 표기는 글자가 붙어 "1회1정"처럼 읽혀서 따로 둔다.
+  const dosageText = dosage.map((item) => `${item.label} ${item.value}`.trim()).join(', ');
 </script>
 
 <section class="hero">
@@ -18,9 +20,10 @@
       약국에서 받은 복약 안내서를 찍으면 약마다 복용 정보를 정리하고 알람을 맞춰 드려요. 사진에 없는 값은 지어내지
       않고 직접 확인하도록 비워 둡니다.
     </p>
-    <p class="dose" aria-label="1회 1정, 1일 3회, 5일분">
+    <p class="dose">
+      <span class="sr-only">{dosageText}</span>
       {#each dosage as item}
-        <span><em>{item.label}</em><b>{item.value}</b></span>
+        <span aria-hidden="true"><em>{item.label}</em><b>{item.value}</b></span>
       {/each}
     </p>
     <div class="actions">
