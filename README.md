@@ -25,7 +25,7 @@ npm test         # vitest 단위 테스트
 `App.svelte`가 상단바 아래에 섹션을 이 순서로 놓습니다.
 
 | 섹션 | 컴포넌트 | 내용 |
-|---|---|---|
+| --- | --- | --- |
 | 첫 화면 | `Hero` | 소개 문구, 약 봉투 표기 예시, GitHub·`DESIGN.md` 링크, 분석 결과 화면 |
 | 사용 흐름 | `HowItWorks` | 사진 찍기 → 확인하기 → 알람 켜기, 단계마다 앱 화면 |
 | 안전 설계 | `Safety` | "확인 필요", 표 빈 칸 처리, 실행 취소, 재부팅 후 복구 |
@@ -34,7 +34,7 @@ npm test         # vitest 단위 테스트
 
 ## 폴더 구조
 
-```
+```text
 index.html              메타 태그(설명, Open Graph), favicon, 저장된 테마를 먼저 적용하는 스크립트
 public/                 favicon, apple-touch-icon, 공유 카드 og.png (그대로 복사, base 경로 자동 부여)
 src/
