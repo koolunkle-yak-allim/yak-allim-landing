@@ -226,7 +226,7 @@
 
   .times {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
     gap: var(--space-2);
   }
 
