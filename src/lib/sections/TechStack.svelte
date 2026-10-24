@@ -2,10 +2,10 @@
   const GITHUB = 'https://github.com/koolunkle-yak-allim';
 
   const parts = [
-    { name: 'Android 앱', stack: 'Kotlin · Jetpack Compose · Hilt · CameraX · AlarmManager', repo: 'yak-allim-android' },
-    { name: '서버', stack: 'Spring Boot(Kotlin) · SSE 진행률 · FCM 알림', repo: 'yak-allim-server' },
-    { name: '분석', stack: 'n8n · Upstage OCR · Gemini', repo: 'yak-allim-infra' },
-    { name: '배포', stack: 'Docker · Nginx 블루-그린 · Jenkins · GitHub Actions', repo: 'yak-allim-infra' },
+    { name: 'Android 앱', stack: ['Kotlin', 'Jetpack Compose', 'Hilt', 'CameraX', 'AlarmManager'], repo: 'yak-allim-android' },
+    { name: '서버', stack: ['Spring Boot(Kotlin)', 'SSE 진행률', 'FCM 알림'], repo: 'yak-allim-server' },
+    { name: '분석', stack: ['n8n', 'Upstage OCR', 'Gemini'], repo: 'yak-allim-infra' },
+    { name: '배포', stack: ['Docker', 'Nginx 블루-그린', 'Jenkins', 'GitHub Actions'], repo: 'yak-allim-infra' },
   ];
 </script>
 
@@ -19,7 +19,12 @@
       <div class="row">
         <dt>{part.name}</dt>
         <dd>
-          <span>{part.stack}</span>
+          <span class="stack">
+            <!-- 가운뎃점은 앞 항목에 붙여, 줄이 바뀌어도 줄 맨 앞에 오지 않게 한다. -->
+            {#each part.stack as item, index (item)}
+              <span class="item">{item}{index < part.stack.length - 1 ? ' ·' : ''}</span>{' '}
+            {/each}
+          </span>
           <a href="{GITHUB}/{part.repo}">{part.repo}</a>
         </dd>
       </div>
@@ -85,6 +90,10 @@
     flex-wrap: wrap;
     gap: var(--space-1) var(--space-3);
     color: var(--color-ink-muted);
+  }
+
+  .item {
+    white-space: nowrap;
   }
 
   a {

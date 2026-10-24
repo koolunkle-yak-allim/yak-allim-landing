@@ -24,7 +24,7 @@
 
 <section class="safety" aria-labelledby="safety-title">
   <div class="head">
-    <h2 id="safety-title">틀린 용량은 빈 값보다 위험하니까</h2>
+    <h2 id="safety-title">틀린 용량은 빈&nbsp;값보다 위험하니까</h2>
     <p>AI가 읽은 값을 그대로 믿지 않도록 만들었습니다.</p>
   </div>
   <div class="grid">

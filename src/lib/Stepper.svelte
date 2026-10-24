@@ -24,22 +24,33 @@
 
 <div class="stepper">
   <span class="label">{label}</span>
-  <button type="button" onclick={() => change(-1)} disabled={!canDecrease} aria-label="{label} 줄이기">−</button>
-  <output class:empty={isEmpty}>{isEmpty ? '선택' : format(value)}</output>
-  <button type="button" onclick={() => change(1)} disabled={!canIncrease} aria-label="{label} 늘리기">+</button>
+  <div class="controls">
+    <button type="button" onclick={() => change(-1)} disabled={!canDecrease} aria-label="{label} 줄이기">−</button>
+    <output class:empty={isEmpty}>{isEmpty ? '선택' : format(value)}</output>
+    <button type="button" onclick={() => change(1)} disabled={!canIncrease} aria-label="{label} 늘리기">+</button>
+  </div>
 </div>
 
 <style>
+  /* 폭이 좁으면 이름표를 줄이지 않고 −/+ 묶음을 다음 줄 오른쪽으로 내린다. */
   .stepper {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-2) var(--space-3);
   }
 
   .label {
-    flex: 1;
-    min-width: 0;
+    flex: 1 0 auto;
+    white-space: nowrap;
     color: var(--color-ink);
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
   }
 
   button {
@@ -65,7 +76,7 @@
   }
 
   output {
-    width: 4.5em;
+    width: 3.75em;
     text-align: center;
     font-size: var(--text-title);
     font-weight: 700;
