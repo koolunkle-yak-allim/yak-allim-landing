@@ -1,4 +1,5 @@
 <script>
+  import Section from '../Section.svelte';
   // 앱 화면이 지키는 디자인 원칙과 그 근거. 이전 버전과 비교하지 않고 지금 제품이 지키는 기준만 말한다.
   // 없는 값 처리와 끄기 버튼은 Safety 섹션이 다룬다. 색·글자·간격 규칙은 앱의 DESIGN.md를 기준으로 한다.
   const DESIGN_MD = 'https://github.com/koolunkle-yak-allim/yak-allim-android/blob/main/DESIGN.md';
@@ -38,11 +39,11 @@
   ];
 </script>
 
-<section class="design" aria-labelledby="design-title">
-  <div class="head">
-    <h2 id="design-title">기준을 정하고, 재서 확인했습니다</h2>
-    <p>보기 좋은지가 아니라 측정할 수 있는 기준으로 화면을 정했습니다.</p>
-  </div>
+<Section
+  id="design"
+  title="기준을 정하고, 재서 확인했습니다"
+  lead="보기 좋은지가 아니라 측정할 수 있는 기준으로 화면을 정했습니다."
+>
 
   <div class="principles">
     {#each principles as principle (principle.title)}
@@ -78,32 +79,14 @@
       색·글자·간격 규칙은 앱 저장소의 <a href={DESIGN_MD}>DESIGN.md</a>에 정리되어 있습니다.
     </p>
   </div>
-</section>
+</Section>
 
 <style>
-  .design {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  h2 {
-    font-size: 28px;
-    font-weight: 800;
-  }
-
   h3 {
     font-size: var(--text-subtitle);
     font-weight: 700;
   }
 
-  .head p,
   .more,
   .evidence {
     color: var(--color-ink-muted);

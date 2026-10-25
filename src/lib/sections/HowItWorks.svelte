@@ -1,4 +1,5 @@
 <script>
+  import Section from '../Section.svelte';
   import StepCard from '../StepCard.svelte';
   import { screen } from '../screens.js';
 
@@ -24,27 +25,15 @@
   ];
 </script>
 
-<section class="how" aria-labelledby="how-title">
-  <h2 id="how-title">사진 한 장에서 알람까지</h2>
+<Section id="how" title="사진 한 장에서 알람까지">
   <div class="steps">
     {#each steps as step, index (step.title)}
       <StepCard number={index + 1} {...step} />
     {/each}
   </div>
-</section>
+</Section>
 
 <style>
-  .how {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  h2 {
-    font-size: 28px;
-    font-weight: 800;
-  }
-
   .steps {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
