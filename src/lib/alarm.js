@@ -55,12 +55,20 @@ const minutesOf = (time) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3,
 export function resizeTimes(current, frequency) {
   const defaults = defaultTimes(frequency);
   if (current.length === 0) return defaults;
-  const previous = defaultTimes(current.length);
-  const kept = current
-    .map((time, index) => ({ time, anchor: time === '' ? previous[index] : time }))
-    .filter(({ time }, index) => time !== previous[index])
-    .sort((a, b) => byTime(a.time, b.time))
-    .slice(0, frequency);
+  // 시각은 고칠 때마다 정렬되어 자리가 바뀌므로, 자리가 아니라 값으로 이전 기본값과 비교해 고친 시각을 고른다.
+  const unmatchedDefaults = defaultTimes(current.length);
+  const matchesDefault = (time) => {
+    const index = unmatchedDefaults.indexOf(time);
+    if (index < 0) return false;
+    unmatchedDefaults.splice(index, 1);
+    return true;
+  };
+  const edited = current.filter((time) => time !== '' && !matchesDefault(time)).map((time) => ({ time, anchor: time }));
+  // 지운 칸은 아무 시각과도 짝이 맞지 않은 이전 기본값을 기준으로 삼는다.
+  const cleared = current
+    .filter((time) => time === '')
+    .map(() => ({ time: '', anchor: unmatchedDefaults.shift() ?? defaults[0] }));
+  const kept = [...edited, ...cleared].sort((a, b) => byTime(a.time, b.time)).slice(0, frequency);
   const remaining = [...defaults];
   for (const { anchor } of kept) {
     const distance = (time) => Math.abs(minutesOf(time) - minutesOf(anchor));
@@ -68,6 +76,11 @@ export function resizeTimes(current, frequency) {
     remaining.splice(remaining.indexOf(nearest), 1);
   }
   return [...kept.map(({ time }) => time), ...remaining].sort(byTime);
+}
+
+/** 시각을 시간순으로 놓는다. 지운 칸('')은 맨 뒤. 앱의 replaceTime처럼 시각을 고친 뒤에 쓴다. */
+export function sortTimes(times) {
+  return [...times].sort(byTime);
 }
 
 /**

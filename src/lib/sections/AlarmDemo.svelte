@@ -9,6 +9,7 @@
     formatAmount,
     defaultTimes,
     resizeTimes,
+    sortTimes,
     isAlarmReady,
     timeOfDay,
     dateRange,
@@ -131,7 +132,13 @@
 
       <div class="group">
         <span class="group-title">복용 시각 · 하루 {frequency}번</span>
-        <div class="times">
+        <!-- 고친 시각은 입력하는 동안 자리를 지키고, 포커스가 시각 묶음을 떠날 때 시간순으로 다시 놓는다(앱은 시각 선택을 확인할 때). -->
+        <div
+          class="times"
+          onfocusout={(event) => {
+            if (!event.currentTarget.contains(/** @type {Node | null} */ (event.relatedTarget))) times = sortTimes(times);
+          }}
+        >
           {#each times as time, index (index)}
             <label class="time" class:empty={time === ''}>
               <span aria-hidden="true">{time === '' ? '선택' : timeOfDay(time)}</span>

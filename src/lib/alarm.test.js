@@ -7,6 +7,7 @@ import {
   formatAmount,
   defaultTimes,
   resizeTimes,
+  sortTimes,
   isAlarmReady,
   timeOfDay,
   dateRange,
@@ -77,6 +78,24 @@ describe('resizeTimes', () => {
 
   it('채우는 기본값은 남긴 시각과 겹치지 않는다', () => {
     expect(resizeTimes(['12:30'], 3)).toEqual(['08:00', '12:30', '18:30']);
+  });
+
+  it('정렬되어 자리가 바뀐 뒤에도 고친 시각만 남기고 횟수를 바꾼다', () => {
+    // 2회 기본값의 08:00을 21:00으로 고치면 19:00 · 21:00이 된다. 19:00은 고친 시각이 아니다.
+    const edited = sortTimes(['21:00', '19:00']);
+    expect(resizeTimes(edited, 3)).toEqual(['08:00', '12:30', '21:00']);
+    expect(resizeTimes(edited, 1)).toEqual(['21:00']);
+  });
+});
+
+describe('sortTimes', () => {
+  it('시각 하나를 고치면 시간순으로 다시 놓는다', () => {
+    expect(sortTimes(['21:00', '19:00'])).toEqual(['19:00', '21:00']);
+    expect(sortTimes(['08:00', '07:30'])).toEqual(['07:30', '08:00']);
+  });
+
+  it('지운 칸은 맨 뒤에 둔다', () => {
+    expect(sortTimes(['', '19:00', '08:00'])).toEqual(['08:00', '19:00', '']);
   });
 });
 
