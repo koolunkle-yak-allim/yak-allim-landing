@@ -65,6 +65,7 @@ src/
   assets/screens/       시연용 안내서로 찍은 앱 화면, 화면마다 360·600·720px WebP
   lib/
     sections/           페이지 섹션 컴포넌트 (위 표)
+    Section.svelte      섹션 공통 틀: 제목·소개 한 줄, 본문은 children으로 받음 (Hero 제외)
     Stepper.svelte      −/+ 스테퍼, 값이 null이면 "선택" 표시
     ThemeToggle.svelte  라이트·다크 전환 버튼, 아이콘은 CSS가 현재 테마로 고름
     PhoneFrame.svelte   앱 화면을 감싸는 폰 테두리, srcset·sizes로 맞는 크기만 받음
