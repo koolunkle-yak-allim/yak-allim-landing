@@ -1,4 +1,5 @@
 <script>
+  import Section from '../Section.svelte';
   import FeatureCard from '../FeatureCard.svelte';
 
   const features = [
@@ -23,40 +24,19 @@
   ];
 </script>
 
-<section class="safety" aria-labelledby="safety-title">
-  <div class="head">
-    <h2 id="safety-title">틀린 용량은 빈&nbsp;값보다 위험하니까</h2>
-    <p>AI가 읽은 값을 그대로 믿지 않도록 만들었습니다.</p>
-  </div>
+<Section
+  id="safety"
+  title={'틀린 용량은 빈\u00a0값보다 위험하니까'}
+  lead="AI가 읽은 값을 그대로 믿지 않도록 만들었습니다."
+>
   <div class="grid">
     {#each features as feature (feature.title)}
       <FeatureCard {...feature} />
     {/each}
   </div>
-</section>
+</Section>
 
 <style>
-  .safety {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  h2 {
-    font-size: 28px;
-    font-weight: 800;
-  }
-
-  .head p {
-    color: var(--color-ink-muted);
-  }
-
   .grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

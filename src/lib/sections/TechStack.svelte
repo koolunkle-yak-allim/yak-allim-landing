@@ -1,4 +1,5 @@
 <script>
+  import Section from '../Section.svelte';
   const GITHUB = 'https://github.com/koolunkle-yak-allim';
 
   const parts = [
@@ -9,11 +10,11 @@
   ];
 </script>
 
-<section class="tech" aria-labelledby="tech-title">
-  <div class="head">
-    <h2 id="tech-title">앱부터 배포까지 직접 만들었습니다</h2>
-    <p>분석 요청은 바로 접수하고, 진행 상황은 실시간으로, 완료는 알림으로 전합니다.</p>
-  </div>
+<Section
+  id="tech"
+  title="앱부터 배포까지 직접 만들었습니다"
+  lead="분석 요청은 바로 접수하고, 진행 상황은 실시간으로, 완료는 알림으로 전합니다."
+>
   <dl class="list">
     {#each parts as part (part.name)}
       <div class="row">
@@ -30,30 +31,9 @@
       </div>
     {/each}
   </dl>
-</section>
+</Section>
 
 <style>
-  .tech {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
-  }
-
-  .head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  h2 {
-    font-size: 28px;
-    font-weight: 800;
-  }
-
-  .head p {
-    color: var(--color-ink-muted);
-  }
-
   .list {
     margin: 0;
     border: 1px solid var(--color-line);

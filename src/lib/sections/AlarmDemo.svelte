@@ -1,4 +1,5 @@
 <script>
+  import Section from '../Section.svelte';
   import { tick } from 'svelte';
   import Stepper from '../Stepper.svelte';
   import {
@@ -82,12 +83,11 @@
   }
 </script>
 
-<section class="demo" aria-labelledby="demo-title">
-  <div class="head">
-    <h2 id="demo-title">직접 해 보세요</h2>
-    <p>시연용 안내서에서 1회 복용량 칸이 비어 있던 약입니다. 값을 정해야 알람을 켤 수 있어요.</p>
-  </div>
-
+<Section
+  id="demo"
+  title="직접 해 보세요"
+  lead="시연용 안내서에서 1회 복용량 칸이 비어 있던 약입니다. 값을 정해야 알람을 켤 수 있어요."
+>
   <div class="layout">
     <div class="sheet">
       <h3 bind:this={heading} tabindex="-1">뮤코펙트정</h3>
@@ -159,13 +159,18 @@
     <p class="sr-only" role="status">{status}</p>
 
     <div class="result">
+      <!-- 켜짐·꺼짐 카드가 같이 쓰는 윗부분. 칩의 모양(tone)과 글자만 다르다. -->
+      {#snippet cardHead(tone, label)}
+        <div class="card-head">
+          <strong>뮤코펙트정</strong>
+          <span class="chip {tone}">{label}</span>
+        </div>
+        <p class="spec">{summary}</p>
+      {/snippet}
+
       {#if isOn}
         <div class="card">
-          <div class="card-head">
-            <strong>뮤코펙트정</strong>
-            <span class="chip on">알람 켜짐</span>
-          </div>
-          <p class="spec">{summary}</p>
+          {@render cardHead('on', '알람 켜짐')}
           <p class="muted">알람 {times.join(' · ')}</p>
           <p class="muted">{period}</p>
         </div>
@@ -173,41 +178,19 @@
         <button type="button" class="secondary" onclick={reset}>처음부터 다시</button>
       {:else}
         <div class="card">
-          <div class="card-head">
-            <strong>뮤코펙트정</strong>
-            {#if canTurnOn}
-              <span class="chip off">알람 꺼짐</span>
-            {:else}
-              <span class="chip warn">확인 필요</span>
-            {/if}
-          </div>
-          <p class="spec">{summary}</p>
+          {#if canTurnOn}
+            {@render cardHead('off', '알람 꺼짐')}
+          {:else}
+            {@render cardHead('warn', '확인 필요')}
+          {/if}
         </div>
         <p class="note">값을 바꾸면 카드가 바로 따라 바뀝니다.</p>
       {/if}
     </div>
   </div>
-</section>
+</Section>
 
 <style>
-  .demo {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .head {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  h2 {
-    font-size: 28px;
-    font-weight: 800;
-  }
-
-  .head p,
   .muted,
   .note,
   .period {
