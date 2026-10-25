@@ -38,10 +38,36 @@ export function defaultTimes(frequency) {
   }
 }
 
-/** 횟수가 바뀌면, 사용자가 이미 고친 앞쪽 시각은 남기고 나머지는 기본값으로 채운다. */
+// "HH:MM"은 글자 순서가 곧 시간 순서다. 지운 시각('')은 맨 뒤에 둔다.
+const byTime = (a, b) => {
+  if (a === '' || b === '') return Number(a === '') - Number(b === '');
+  return a < b ? -1 : a > b ? 1 : 0;
+};
+
+const minutesOf = (time) => Number(time.slice(0, 2)) * 60 + Number(time.slice(3, 5));
+
+/**
+ * 횟수가 바뀔 때의 복용 시각. 새 횟수의 기본값에서 시작해, 사용자가 고친 시각은 그대로 남긴다.
+ * 고친 시각 하나가 가장 가까운 기본값 하나를 대신하고, 결과는 시간순이다.
+ * 고친 시각이 새 횟수보다 많으면 이른 시각부터 남긴다.
+ * 웹에서만 생기는 지운 시각('')도 고친 값으로 남기고, 원래 그 자리의 기본값과 가까운 기본값을 대신한다.
+ */
 export function resizeTimes(current, frequency) {
   const defaults = defaultTimes(frequency);
-  return defaults.map((time, index) => current[index] ?? time);
+  if (current.length === 0) return defaults;
+  const previous = defaultTimes(current.length);
+  const kept = current
+    .map((time, index) => ({ time, anchor: time === '' ? previous[index] : time }))
+    .filter(({ time }, index) => time !== previous[index])
+    .sort((a, b) => byTime(a.time, b.time))
+    .slice(0, frequency);
+  const remaining = [...defaults];
+  for (const { anchor } of kept) {
+    const distance = (time) => Math.abs(minutesOf(time) - minutesOf(anchor));
+    const nearest = remaining.reduce((best, time) => (distance(time) < distance(best) ? time : best));
+    remaining.splice(remaining.indexOf(nearest), 1);
+  }
+  return [...kept.map(({ time }) => time), ...remaining].sort(byTime);
 }
 
 /**

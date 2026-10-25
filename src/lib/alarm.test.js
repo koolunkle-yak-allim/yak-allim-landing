@@ -53,8 +53,30 @@ describe('resizeTimes', () => {
     expect(resizeTimes(['07:30'], 3)).toEqual(['07:30', '12:30', '18:30']);
   });
 
-  it('횟수가 줄면 뒤쪽 시각을 뺀다', () => {
+  it('횟수가 줄면 늦은 시각부터 뺀다', () => {
     expect(resizeTimes(['07:30', '13:00', '20:00'], 2)).toEqual(['07:30', '13:00']);
+    expect(resizeTimes(['20:00', '07:30', '13:00'], 2)).toEqual(['07:30', '13:00']);
+  });
+
+  it('시각을 고치지 않았으면 새 횟수의 기본값을 쓴다', () => {
+    for (let from = 1; from <= 8; from++) {
+      for (let to = 1; to <= 8; to++) {
+        expect(resizeTimes(defaultTimes(from), to)).toEqual(defaultTimes(to));
+      }
+    }
+  });
+
+  it('고친 시각은 가장 가까운 기본값 대신 들어가고 시간순으로 둔다', () => {
+    expect(resizeTimes(['08:00', '21:00'], 3)).toEqual(['08:00', '12:30', '21:00']);
+    expect(resizeTimes(['21:00', '19:00'], 3)).toEqual(['08:00', '12:30', '21:00']);
+  });
+
+  it('횟수가 줄어도 고친 시각을 먼저 남긴다', () => {
+    expect(resizeTimes(['21:00', '19:00'], 1)).toEqual(['21:00']);
+  });
+
+  it('채우는 기본값은 남긴 시각과 겹치지 않는다', () => {
+    expect(resizeTimes(['12:30'], 3)).toEqual(['08:00', '12:30', '18:30']);
   });
 });
 
@@ -68,8 +90,8 @@ describe('isAlarmReady', () => {
     expect(isAlarmReady(1, ['08:00', ''])).toBe(false);
   });
 
-  it('빈 시각은 횟수를 바꿔도 비어 있는 채로 남는다', () => {
-    expect(resizeTimes(['', '19:00'], 3)).toEqual(['', '19:00', '18:30']);
+  it('빈 시각은 횟수를 바꿔도 비어 있는 채로 맨 뒤에 남는다', () => {
+    expect(resizeTimes(['', '19:00'], 3)).toEqual(['12:30', '18:30', '']);
   });
 });
 
